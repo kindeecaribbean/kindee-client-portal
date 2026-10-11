@@ -5,6 +5,8 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZIhphiaqO927Kr4at7OJLA_3orb7S9W
 const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
 });
+const queryParams = new URLSearchParams(window.location.search);
+const DEMO_MODE = queryParams.get("demo") === "portal";
 
 const $ = (id) => document.getElementById(id);
 const views = { loading: $("loading"), auth: $("auth-view"), portal: $("portal-view") };
@@ -132,7 +134,7 @@ function renderDashboard(membership, dashboard, proposals, responses) {
   $("root-folder").href = safeUrl(data.rootFolderUrl);
 
   $("contacts-grid").innerHTML = (data.contacts || []).map((contact) => `
-    <article class="contact-card"><span>${escapeHtml(contact.role)}</span><strong>${escapeHtml(contact.name)}</strong><p>${escapeHtml(contact.note)}</p><a href="tel:${escapeHtml(contact.phone)}">${escapeHtml(contact.phone)}</a><a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a></article>
+    <article class="contact-card"><span>${escapeHtml(contact.role)}</span><strong>${escapeHtml(contact.name)}</strong><p>${escapeHtml(contact.note)}</p>${contact.phone ? `<a href="tel:${escapeHtml(contact.phone)}">${escapeHtml(contact.phone)}</a>` : ""}${contact.email ? `<a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a>` : ""}</article>
   `).join("");
 
   renderApprovals(proposals, responses);
@@ -150,6 +152,45 @@ function renderApprovals(proposals, responses) {
     const response = responses.find((item) => item.proposal_id === proposal.id && item.user_id === currentUser.id);
     return `<div class="planning-item"><div class="planning-date">${escapeHtml(proposal.code)}</div><div><strong>${escapeHtml(proposal.title)}</strong><p>${escapeHtml(response ? "Jouw reactie is vastgelegd." : proposal.note || proposal.amount)}</p></div></div>`;
   }).join("");
+}
+
+function openPortalDemo() {
+  currentUser = { id: "demo", email: "Voorbeeldweergave · geen privébestanden" };
+  const membership = {
+    client_display_name: "Familie Example",
+    projects: { display_name: "Villa Example" },
+  };
+  const folderTitles = [
+    "Contract & begroting", "Betaalstaten", "Facturen", "Betalingsbewijzen",
+    "Meer- en minderwerk", "Planning", "Tekeningen", "Vergunningen & machtigingen",
+    "Nutsvoorzieningen", "Inkoop & import", "Voortgangsfoto’s", "Correspondentie",
+    "Oplevering & garantie",
+  ];
+  const dashboard = { content: {
+    projectUpdate: "De eerste projectupdate volgt.",
+    lastSync: "11 oktober 2026",
+    planning: [],
+    summary: [],
+    rootFolderUrl: "#",
+    folders: folderTitles.map((title, index) => ({
+      number: String(index + 1).padStart(2, "0"), title, url: "#",
+    })),
+    contacts: [
+      { name: "Jouw vaste contactpersoon", role: "Uitvoerder", note: "Dagelijkse coördinatie op de bouw" },
+      { name: "Ons uitvoeringsteam", role: "Hoofduitvoerder", note: "Uitvoering en algemeen toezicht" },
+      { name: "Onze financiële administratie", role: "Financiële administratie", note: "Facturen, betalingen en financiële vragen" },
+      { name: "Ons ondersteuningsteam", role: "Algemene vragen", note: "Vergunningen, nutsvoorzieningen, transport en ondersteuning" },
+    ],
+  }};
+  renderDashboard(membership, dashboard, [], []);
+  $("signout-button").textContent = "Voorbeeld sluiten";
+  $("root-folder").removeAttribute("href");
+  document.querySelectorAll("#folder-grid a").forEach((link) => {
+    link.removeAttribute("href");
+    link.removeAttribute("target");
+    link.querySelector("small").textContent = "Beschikbaar na inloggen";
+  });
+  showView("portal");
 }
 
 async function openPortal() {
@@ -213,7 +254,15 @@ $("reset-form").addEventListener("submit", handleReset);
 $("forgot-button").addEventListener("click", handleForgot);
 $("activate-button").addEventListener("click", () => setAuthMode("activate"));
 $("back-button").addEventListener("click", () => setAuthMode("login"));
-$("signout-button").addEventListener("click", async () => { await supabase.auth.signOut(); setAuthMode("login"); showView("auth"); });
+$("signout-button").addEventListener("click", async () => {
+  if (DEMO_MODE) {
+    window.location.href = window.location.pathname;
+    return;
+  }
+  await supabase.auth.signOut();
+  setAuthMode("login");
+  showView("auth");
+});
 
 supabase.auth.onAuthStateChange(async (event, session) => {
   if (event === "PASSWORD_RECOVERY") {
@@ -224,8 +273,10 @@ supabase.auth.onAuthStateChange(async (event, session) => {
   }
 });
 
-const { data: sessionResult } = await supabase.auth.getSession();
-if (new URLSearchParams(window.location.search).has("reset")) {
+const { data: sessionResult } = DEMO_MODE ? { data: { session: null } } : await supabase.auth.getSession();
+if (DEMO_MODE) {
+  openPortalDemo();
+} else if (queryParams.has("reset")) {
   setAuthMode("reset");
   showView("auth");
 } else if (sessionResult.session) {
