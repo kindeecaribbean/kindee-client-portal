@@ -1,0 +1,128 @@
+:root {
+  --navy: #0d1c2a;
+  --navy-2: #142a3e;
+  --gold: #aa8e49;
+  --gold-light: #d9c691;
+  --ink: #172432;
+  --muted: #6d7883;
+  --line: #e5e7e8;
+  --soft: #f4f5f3;
+  --white: #fff;
+  --green: #39775d;
+  --danger: #9c4f49;
+  font-family: "DM Sans", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: var(--soft); }
+button, input { font: inherit; }
+button { cursor: pointer; }
+.hidden { display: none !important; }
+.eyebrow { margin: 0 0 10px; color: var(--gold); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
+.eyebrow.light { color: var(--gold-light); }
+
+.loading-screen { min-height: 100vh; display: grid; place-content: center; gap: 18px; text-align: center; background: var(--navy); color: #cfd6dc; }
+.loading-screen img { width: 180px; margin: auto; filter: brightness(0) invert(1); opacity: .92; }
+.loading-screen span { font-size: 13px; letter-spacing: .04em; }
+
+.auth-shell { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(410px, .65fr); background: var(--white); }
+.auth-image { position: relative; min-height: 100vh; background: url("assets/login-residence.webp") center/cover no-repeat; overflow: hidden; }
+.auth-image-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,17,27,.08), rgba(5,17,27,.62)); }
+.auth-image-copy { position: absolute; left: 7vw; right: 7vw; bottom: 8vh; max-width: 680px; color: white; }
+.auth-image-copy h1 { margin: 0; font: 500 clamp(42px, 5vw, 74px)/1.02 "Manrope", sans-serif; letter-spacing: -.045em; }
+.auth-image-copy > p:last-child { max-width: 580px; margin: 24px 0 0; color: #eef1f3; font-size: 17px; line-height: 1.65; }
+
+.auth-panel { min-height: 100vh; padding: 44px clamp(34px, 4vw, 72px) 28px; display: flex; flex-direction: column; background: #fbfbfa; }
+.brand img { width: 178px; height: auto; display: block; }
+.auth-card { width: 100%; max-width: 440px; margin: auto; padding: 52px 0; }
+.auth-card h2 { margin: 0; font: 500 37px/1.14 "Manrope", sans-serif; letter-spacing: -.035em; }
+.intro { margin: 14px 0 32px; color: var(--muted); line-height: 1.6; }
+.auth-card form { display: grid; }
+.auth-card label { margin: 16px 0 8px; font-size: 13px; font-weight: 600; }
+.auth-card input { width: 100%; border: 1px solid #cfd4d7; border-radius: 2px; padding: 14px 15px; background: white; color: var(--ink); outline: none; transition: .15s ease; }
+.auth-card input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(170,142,73,.12); }
+.auth-card small { margin-top: 8px; color: var(--muted); }
+.button { width: 100%; border: 0; padding: 15px 18px; margin-top: 24px; font-weight: 600; }
+.button.primary { background: var(--navy); color: white; }
+.button:disabled { opacity: .55; cursor: wait; }
+.form-message { min-height: 22px; margin: 18px 0 0; font-size: 13px; line-height: 1.5; color: var(--danger); }
+.form-message.success { color: var(--green); }
+.auth-links { display: flex; justify-content: space-between; gap: 18px; margin-top: 10px; }
+.auth-links button, .back-button { border: 0; padding: 0; background: none; color: var(--muted); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.back-button { margin-top: 12px; }
+.auth-footer { margin: 0; color: #8a9298; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
+
+.portal { min-height: 100vh; }
+.portal-header { min-height: 94px; padding: 14px 5vw; display: flex; align-items: center; justify-content: space-between; background: white; border-bottom: 1px solid var(--line); }
+.portal-header img { width: 146px; }
+.portal-user { display: flex; align-items: center; gap: 20px; color: var(--muted); font-size: 13px; }
+.portal-user button { border: 1px solid var(--line); background: transparent; color: var(--navy); padding: 9px 13px; }
+.portal-main { width: min(1280px, 90vw); margin: 0 auto; padding: 46px 0 70px; }
+.portal-welcome { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 28px; }
+.portal-welcome h1 { margin: 0; font: 500 clamp(30px, 4vw, 46px)/1.15 "Manrope", sans-serif; letter-spacing: -.04em; }
+.project-chip { padding: 11px 15px; border: 1px solid #d8d6cb; background: #fff; color: var(--navy); font-size: 13px; font-weight: 600; }
+.project-hero { display: grid; grid-template-columns: 1.25fr .75fr; gap: 42px; padding: 34px 38px; color: white; background: var(--navy); box-shadow: 0 16px 45px rgba(13,28,42,.12); }
+.project-hero h2 { margin: 0 0 14px; font: 500 31px/1.15 "Manrope", sans-serif; }
+.project-hero > div > p:last-child { margin: 0; color: #cfd8df; line-height: 1.65; }
+.milestone { border-left: 1px solid #425466; padding-left: 38px; }
+.milestone span { color: var(--gold-light); font-size: 11px; text-transform: uppercase; letter-spacing: .13em; }
+.milestone strong { display: block; margin: 13px 0 6px; font-size: 18px; }
+.milestone p { margin: 0; color: #cfd8df; font-size: 13px; line-height: 1.55; }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 18px 0; }
+.summary-card, .panel { background: white; border: 1px solid var(--line); }
+.summary-card { padding: 23px; }
+.summary-card span { display: block; color: var(--muted); font-size: 12px; }
+.summary-card strong { display: block; margin: 12px 0 7px; color: var(--navy); font: 600 21px/1.2 "Manrope", sans-serif; }
+.summary-card small { color: var(--muted); line-height: 1.45; }
+.portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.panel { padding: 27px; }
+.wide-panel { margin-top: 18px; }
+.approvals-panel { border-top: 3px solid var(--gold); }
+.panel-heading { display: flex; align-items: start; justify-content: space-between; gap: 25px; margin-bottom: 18px; }
+.panel-heading h3 { margin: 0; font: 500 24px/1.2 "Manrope", sans-serif; }
+.panel-heading > span { color: var(--muted); font-size: 12px; }
+.planning-item { display: grid; grid-template-columns: 70px 1fr; gap: 16px; padding: 15px 0; border-top: 1px solid var(--line); }
+.planning-date { color: var(--gold); font-size: 11px; font-weight: 600; }
+.planning-item strong { display: block; margin-bottom: 5px; font-size: 14px; }
+.planning-item p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.empty-state { padding: 19px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+.folder-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 11px; }
+.folder-card { min-height: 112px; padding: 17px; display: flex; flex-direction: column; border: 1px solid var(--line); background: #fafaf8; color: var(--ink); text-decoration: none; transition: .15s ease; }
+.folder-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.folder-card span { color: var(--gold); font-size: 10px; letter-spacing: .12em; }
+.folder-card strong { margin: 10px 0; font-size: 14px; }
+.folder-card small { margin-top: auto; color: var(--muted); }
+.text-link { color: var(--navy); font-size: 12px; font-weight: 600; text-decoration: none; }
+.contacts-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.contact-card { padding: 17px; border: 1px solid var(--line); background: #fafaf8; }
+.contact-card span { color: var(--gold); font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.contact-card strong { display: block; margin: 10px 0 5px; }
+.contact-card p { min-height: 38px; margin: 0 0 10px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.contact-card a { display: block; margin-top: 5px; color: var(--navy); font-size: 12px; text-decoration: none; }
+
+@media (max-width: 980px) {
+  .auth-shell { grid-template-columns: 1fr; }
+  .auth-image { min-height: 42vh; }
+  .auth-image-copy { bottom: 5vh; }
+  .auth-image-copy > p:last-child { display: none; }
+  .auth-panel { min-height: auto; }
+  .summary-grid { grid-template-columns: 1fr 1fr; }
+  .contacts-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 680px) {
+  .auth-image { min-height: 33vh; }
+  .auth-image-copy h1 { font-size: 39px; }
+  .auth-panel { padding: 28px 24px 22px; }
+  .auth-card { padding: 46px 0; }
+  .auth-links { align-items: flex-start; flex-direction: column; }
+  .portal-header { padding: 12px 20px; }
+  .portal-header img { width: 126px; }
+  .portal-user span { display: none; }
+  .portal-main { width: auto; padding: 30px 20px 55px; }
+  .portal-welcome { align-items: start; flex-direction: column; }
+  .project-hero { grid-template-columns: 1fr; padding: 28px 24px; }
+  .milestone { border-left: 0; border-top: 1px solid #425466; padding: 22px 0 0; }
+  .summary-grid, .portal-grid, .contacts-grid { grid-template-columns: 1fr; }
+  .folder-grid { grid-template-columns: 1fr; }
+}
