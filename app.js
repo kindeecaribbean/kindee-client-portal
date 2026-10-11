@@ -29,12 +29,12 @@ function setAuthMode(mode) {
   $("reset-form").classList.toggle("hidden", !reset);
   $("auth-links").classList.toggle("hidden", !login);
   $("back-button").classList.toggle("hidden", login || reset);
-  $("auth-title").textContent = login ? "Welkom terug" : activate ? "Activeer jouw account" : "Kies een nieuw wachtwoord";
+  $("auth-title").textContent = login ? "Welcome back" : activate ? "Activeer jouw account" : "Kies een nieuw wachtwoord";
   $("auth-intro").textContent = login
-    ? "Log in om jouw projectomgeving te openen."
+    ? "Your project, beautifully organised."
     : activate
       ? "Gebruik het e-mailadres waarop je door ons bent uitgenodigd."
-      : "Maak een nieuw persoonlijk wachtwoord voor jouw Private Suite.";
+      : "Maak een nieuw persoonlijk wachtwoord voor jouw projectomgeving.";
   setMessage();
 }
 
