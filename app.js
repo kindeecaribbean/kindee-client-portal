@@ -31,7 +31,7 @@ function setAuthMode(mode) {
   $("back-button").classList.toggle("hidden", login || reset);
   $("auth-title").textContent = login ? "Welcome back" : activate ? "Activeer jouw account" : "Kies een nieuw wachtwoord";
   $("auth-intro").textContent = login
-    ? "Your project, beautifully organised."
+    ? "Access every detail of your project."
     : activate
       ? "Gebruik het e-mailadres waarop je door ons bent uitgenodigd."
       : "Maak een nieuw persoonlijk wachtwoord voor jouw projectomgeving.";
