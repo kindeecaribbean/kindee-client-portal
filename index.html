@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Beveiligde private suite voor klanten van Kindee Caribbean." />
+  <title>Private Suite — Kindee Caribbean</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="loading" class="loading-screen" aria-live="polite">
+    <img src="assets/kindee-logo.png" alt="Kindee Caribbean" />
+    <span>Private Suite wordt geopend…</span>
+  </div>
+
+  <main id="auth-view" class="auth-shell hidden">
+    <section class="auth-image" aria-label="Luxury Caribbean residence">
+      <div class="auth-image-shade"></div>
+      <div class="auth-image-copy">
+        <p class="eyebrow light">Kindee Caribbean</p>
+        <h1>Your project.<br />Always within reach.</h1>
+        <p>Voortgang, documenten en beslissingen — veilig samengebracht in één private omgeving.</p>
+      </div>
+    </section>
+
+    <section class="auth-panel">
+      <a class="brand" href="https://kindeecaribbean.com" aria-label="Naar Kindee Caribbean">
+        <img src="assets/kindee-logo.png" alt="Kindee Caribbean" />
+      </a>
+
+      <div class="auth-card">
+        <p class="eyebrow">Private Suite</p>
+        <h2 id="auth-title">Welkom terug</h2>
+        <p id="auth-intro" class="intro">Log in om jouw projectomgeving te openen.</p>
+
+        <form id="login-form" novalidate>
+          <label for="login-email">E-mailadres</label>
+          <input id="login-email" name="email" type="email" autocomplete="username" required />
+          <label for="login-password">Wachtwoord</label>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required minlength="8" />
+          <button class="button primary" type="submit">Private Suite openen</button>
+        </form>
+
+        <form id="activate-form" class="hidden" novalidate>
+          <label for="activate-email">Uitgenodigd e-mailadres</label>
+          <input id="activate-email" name="email" type="email" autocomplete="username" required />
+          <label for="activate-password">Kies een wachtwoord</label>
+          <input id="activate-password" name="password" type="password" autocomplete="new-password" required minlength="8" />
+          <small>Gebruik minimaal 8 tekens.</small>
+          <button class="button primary" type="submit">Account activeren</button>
+        </form>
+
+        <form id="reset-form" class="hidden" novalidate>
+          <label for="reset-password">Nieuw wachtwoord</label>
+          <input id="reset-password" name="password" type="password" autocomplete="new-password" required minlength="8" />
+          <button class="button primary" type="submit">Nieuw wachtwoord opslaan</button>
+        </form>
+
+        <p id="auth-message" class="form-message" role="status"></p>
+
+        <div id="auth-links" class="auth-links">
+          <button id="forgot-button" type="button">Wachtwoord vergeten?</button>
+          <button id="activate-button" type="button">Eerste keer? Account activeren</button>
+        </div>
+        <button id="back-button" class="back-button hidden" type="button">← Terug naar inloggen</button>
+      </div>
+
+      <p class="auth-footer">Beveiligde toegang · Kindee Caribbean</p>
+    </section>
+  </main>
+
+  <main id="portal-view" class="portal hidden">
+    <header class="portal-header">
+      <img src="assets/kindee-logo.png" alt="Kindee Caribbean" />
+      <div class="portal-user">
+        <span id="header-user"></span>
+        <button id="signout-button" type="button">Uitloggen</button>
+      </div>
+    </header>
+
+    <div class="portal-main">
+      <section class="portal-welcome">
+        <div>
+          <p class="eyebrow">Private Suite</p>
+          <h1>Welkom, <span id="client-name"></span></h1>
+        </div>
+        <div class="project-chip" id="project-name"></div>
+      </section>
+
+      <section class="project-hero">
+        <div>
+          <p class="eyebrow light">Actuele projectstatus</p>
+          <h2 id="hero-project"></h2>
+          <p id="project-update"></p>
+        </div>
+        <div class="milestone">
+          <span>Volgende mijlpaal</span>
+          <strong id="next-milestone"></strong>
+          <p id="next-note"></p>
+        </div>
+      </section>
+
+      <section id="summary-grid" class="summary-grid"></section>
+
+      <section class="portal-grid">
+        <article class="panel approvals-panel">
+          <div class="panel-heading">
+            <div><p class="eyebrow">Actie vereist</p><h3>Goedkeuringen</h3></div>
+          </div>
+          <div id="approvals-list" class="empty-state">Er staan momenteel geen voorstellen ter beoordeling.</div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading"><div><p class="eyebrow">Planning</p><h3>Laatste update</h3></div><span id="last-sync"></span></div>
+          <div id="planning-list"></div>
+        </article>
+      </section>
+
+      <section class="panel wide-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">Projectbibliotheek</p><h3>Documenten</h3></div>
+          <a id="root-folder" class="text-link" target="_blank" rel="noopener">Alles openen ↗</a>
+        </div>
+        <div id="folder-grid" class="folder-grid"></div>
+      </section>
+
+      <section class="panel wide-panel">
+        <div class="panel-heading"><div><p class="eyebrow">Jouw team</p><h3>Direct contact</h3></div></div>
+        <div id="contacts-grid" class="contacts-grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
