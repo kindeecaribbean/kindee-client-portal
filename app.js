@@ -11,6 +11,7 @@ const DEMO_MODE = queryParams.get("demo") === "portal";
 const $ = (id) => document.getElementById(id);
 const views = { loading: $("loading"), auth: $("auth-view"), portal: $("portal-view") };
 let currentUser = null;
+let availableMemberships = [];
 
 function showView(name) {
   Object.entries(views).forEach(([key, element]) => element.classList.toggle("hidden", key !== name));
@@ -193,6 +194,58 @@ function openPortalDemo() {
   showView("portal");
 }
 
+function showProjectPicker(memberships) {
+  showView("portal");
+  $("header-user").textContent = currentUser.email;
+
+  const portalMain = document.querySelector(".portal-main");
+  portalMain.classList.add("hidden");
+
+  const picker = document.createElement("section");
+  picker.id = "project-picker";
+  picker.style.cssText =
+    "max-width:1180px;margin:0 auto;padding:clamp(70px,10vw,130px) 24px;";
+
+  picker.innerHTML = `
+    <div style="max-width:660px;margin-bottom:46px">
+      <p class="eyebrow">Client Portal</p>
+      <h1 style="font-size:clamp(36px,6vw,70px);font-weight:400;line-height:1.05;margin:12px 0 20px">
+        Selecteer uw project
+      </h1>
+      <p style="color:#68737b;font-size:17px;line-height:1.7;margin:0">
+        Kies de projectomgeving die u wilt openen.
+      </p>
+    </div>
+    <div id="project-picker-grid"
+         style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px">
+    </div>`;
+
+  const grid = picker.querySelector("#project-picker-grid");
+
+  memberships.forEach((membership) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.style.cssText =
+      "min-height:190px;padding:30px;text-align:left;border:1px solid #d8d5ce;background:#fff;color:#0d1921;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform .2s ease,border-color .2s ease;";
+
+    button.innerHTML = `
+      <span style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#9a874e">Project</span>
+      <strong style="font-size:25px;font-weight:400;line-height:1.25">
+        ${escapeHtml(membership.projects.display_name)}
+      </strong>
+      <span style="font-size:14px">Project openen&nbsp; →</span>`;
+
+    button.addEventListener("click", () => {
+      const url = new URL(window.location.href);
+      url.searchParams.set("project", membership.project_id);
+      window.location.href = url.toString();
+    });
+
+    grid.appendChild(button);
+  });
+
+  document.querySelector("#portal-view .portal-header").after(picker);
+}
 async function openPortal() {
   showView("loading");
   const { data: userResult } = await supabase.auth.getUser();
@@ -204,7 +257,7 @@ async function openPortal() {
     .select("project_id, client_display_name, role, projects(id, display_name, is_active)")
     .eq("user_id", currentUser.id)
     .eq("projects.is_active", true)
-    .limit(1);
+    .order("created_at", { ascending: true });
 
   if (membershipError || !memberships?.length) {
     await supabase.auth.signOut();
@@ -213,7 +266,17 @@ async function openPortal() {
     return setMessage("Voor dit e-mailadres staat nog geen actieve projectomgeving klaar. Neem contact op met ons team.");
   }
 
-  const membership = memberships[0];
+  availableMemberships = memberships;
+const selectedProjectId = queryParams.get("project");
+
+if (memberships.length > 1 && !selectedProjectId) {
+  showProjectPicker(memberships);
+  return;
+}
+
+const membership =
+  memberships.find((item) => item.project_id === selectedProjectId) ||
+  memberships[0];
   const [dashboardResult, proposalsResult] = await Promise.all([
     supabase.from("project_dashboards").select("content, updated_at").eq("project_id", membership.project_id).single(),
     supabase.from("more_work_proposals").select("id, code, title, amount, proposal_date, document_url, note, status, revision").eq("project_id", membership.project_id).order("created_at", { ascending: false }),
