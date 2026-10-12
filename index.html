@@ -105,7 +105,7 @@
 
       <section id="summary-grid" class="summary-grid"></section>
 
-      <section class="portal-grid">
+      <section class="portal-grid portal-grid-three">
         <article class="panel approvals-panel">
           <div class="panel-heading">
             <div><p class="eyebrow">Actie vereist</p><h3>Goedkeuringen</h3></div>
@@ -113,7 +113,16 @@
           <div id="approvals-list" class="empty-state">Er staan momenteel geen voorstellen ter beoordeling.</div>
         </article>
 
-        <article class="panel">
+                <article class="panel team-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Jouw team</p>
+              <h3>Direct contact</h3>
+            </div>
+          </div>
+          <div id="contacts-grid" class="contacts-grid"></div>
+        </article>
+<article class="panel">
           <div class="panel-heading"><div><p class="eyebrow">Planning</p><h3>Laatste update</h3></div><span id="last-sync"></span></div>
           <div id="planning-list"></div>
         </article>
@@ -127,11 +136,7 @@
         <div id="folder-grid" class="folder-grid"></div>
       </section>
 
-      <section class="panel wide-panel">
-        <div class="panel-heading"><div><p class="eyebrow">Jouw team</p><h3>Direct contact</h3></div></div>
-        <div id="contacts-grid" class="contacts-grid"></div>
-      </section>
-    </div>
+          </div>
   </main>
 
   <script type="module" src="app.js"></script>
