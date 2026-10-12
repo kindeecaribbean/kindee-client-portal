@@ -264,12 +264,12 @@ $("signout-button").addEventListener("click", async () => {
   showView("auth");
 });
 
-supabase.auth.onAuthStateChange(async (event, session) => {
+supabase.auth.onAuthStateChange((event, session) => {
   if (event === "PASSWORD_RECOVERY") {
     setAuthMode("reset");
     showView("auth");
   } else if (event === "SIGNED_IN" && session?.user) {
-    await openPortal();
+    setTimeout(() => { void openPortal(); }, 0);
   }
 });
 
